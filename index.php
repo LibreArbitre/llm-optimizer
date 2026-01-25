@@ -459,10 +459,16 @@ function render_tags($tags) {
                     <button type="button" class="gpu-preset-btn" data-vram="12">RTX 5070<br>12 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="16">RTX 5070 Ti<br>16 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="24">RTX 4090<br>24 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="24">RTX 5090<br>32 GB</button>
-                    <button type="button" class="gpu-preset-btn" data-vram="24">L4/A10<br>24 GB</button>
-                    <button type="button" class="gpu-preset-btn" data-vram="48">L40S<br>48 GB</button>
-                    <button type="button" class="gpu-preset-btn" data-vram="80">H100/A100<br>80 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="32">RTX 5090<br>32 GB</button>
+					<!-- NVIDIA 2024-2025 -->
+					<button type="button" class="gpu-preset-btn" data-vram="48">L40S<br>48 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="80">H100<br>80 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="94">H200<br>94 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="141">H200<br>141 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="192">B100<br>192 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="288">B200<br>288 GB</button>
+					<!-- AMD 2024-2025 -->
+					<button type="button" class="gpu-preset-btn" data-vram="192">MI300X<br>192 GB</button>
                 </div>
             </div>
             
@@ -658,7 +664,29 @@ function render_tags($tags) {
                 echo '<div class="results-section">';
                 echo '<h3>' . translate('top_recommendations') . '</h3>';
                 
-                $top_results = array_slice($possibilities, 0, 3);
+                // Diversify top 3: ensure at least one general model
+				$top_results = [];
+				$top_results[] = $possibilities[0]; // Best overall
+
+				// Find best general model (no code/vision tags)
+				foreach ($possibilities as $config) {
+					if (count($top_results) >= 3) break;
+					$tags = $config['model']['tags'];
+					if (empty($tags) || (!in_array('code', $tags) && !in_array('vision', $tags))) {
+						if (!in_array($config, $top_results, true)) {
+							$top_results[] = $config;
+							break;
+						}
+					}
+				}
+
+// Fill remaining slots
+foreach ($possibilities as $config) {
+    if (count($top_results) >= 3) break;
+    if (!in_array($config, $top_results, true)) {
+        $top_results[] = $config;
+    }
+}
                 foreach ($top_results as $index => $config) {
                     $badge_class = $index === 0 ? 'badge-optimal' : 'badge-possible';
                     $card_class = $index === 0 ? 'model-card optimal' : 'model-card';
