@@ -1,0 +1,7 @@
+README.md
+.git
+.gitignore
+docker-compose.yml
+*.md
+.github/
+test.sh
