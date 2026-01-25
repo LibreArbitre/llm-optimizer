@@ -399,6 +399,7 @@ function translate($key, $replacements = []) {
                     <button type="button" class="gpu-preset-btn" data-vram="16">RTX 4070 Ti<br>16 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="16">RTX 5070 Ti<br>16 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="24">RTX 4090<br>24 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="32">RTX 5090<br>32 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="24">L4/A10<br>24 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="48">L40S<br>48 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="80">H100/A100<br>80 GB</button>
@@ -450,16 +451,29 @@ function translate($key, $replacements = []) {
             
             // Popular LLM models
             $models = [
-                ['name' => 'Llama 3.3 70B', 'params' => 70, 'category' => 'Large'],
-                ['name' => 'Llama 3.1 70B', 'params' => 70, 'category' => 'Large'],
-                ['name' => 'Mixtral 8x7B', 'params' => 47, 'category' => 'MoE'],
-                ['name' => 'Qwen 2.5 32B', 'params' => 32, 'category' => 'Medium'],
-                ['name' => 'Qwen 2.5 14B', 'params' => 14, 'category' => 'Medium'],
+				['name' => 'Gemma 2 2B', 'params' => 2, 'category' => 'Tiny'],
+				['name' => 'Gemma 3 2B', 'params' => 2, 'category' => 'Tiny'],
+                ['name' => 'Phi-3 Mini 3.8B', 'params' => 3.8, 'category' => 'Tiny'],
                 ['name' => 'Llama 3.1 8B', 'params' => 8, 'category' => 'Small'],
                 ['name' => 'Mistral 7B', 'params' => 7, 'category' => 'Small'],
-                ['name' => 'Phi-3 Mini 3.8B', 'params' => 3.8, 'category' => 'Tiny'],
                 ['name' => 'Gemma 2 9B', 'params' => 9, 'category' => 'Small'],
-                ['name' => 'Gemma 2 2B', 'params' => 2, 'category' => 'Tiny'],
+				['name' => 'Gemma 3 9B', 'params' => 9, 'category' => 'Small'],
+				['name' => 'Phi-4 14B', 'params' => 14, 'category' => 'Small'],
+                ['name' => 'Qwen 2.5 32B', 'params' => 32, 'category' => 'Medium'],
+                ['name' => 'Qwen 2.5 14B', 'params' => 14, 'category' => 'Medium'],
+				['name' => 'Qwen3 30B', 'params' => 30, 'category' => 'Medium'],
+				['name' => 'Yi 34B', 'params' => 34, 'category' => 'Medium'],
+                ['name' => 'Llama 3.1 70B', 'params' => 70, 'category' => 'Large'],
+                ['name' => 'Mixtral 8x7B', 'params' => 47, 'category' => 'MoE'],
+                ['name' => 'Llama 3.3 70B', 'params' => 70, 'category' => 'Large'],
+				['name' => 'Qwen 2.5 72B', 'params' => 72, 'category' => 'Large'],
+				['name' => 'Llama 4 Scout', 'params' => 70, 'category' => 'Large'],
+				['name' => 'GPT-OSS 120B', 'params' => 120, 'category' => 'Large'],
+				['name' => 'DeepSeek-V3', 'params' => 671, 'category' => 'Huge'], // MoE 37B actifs
+				['name' => 'DeepSeek-R1', 'params' => 671, 'category' => 'Huge'], // MoE
+				['name' => 'Qwen3 235B', 'params' => 235, 'category' => 'Huge'], // MoE 22B actifs
+				['name' => 'Llama 3.1 405B', 'params' => 405, 'category' => 'Huge'],
+				['name' => 'Llama 4 Behemoth', 'params' => 400, 'category' => 'Huge'],
             ];
             
             // Available precisions
