@@ -38,7 +38,11 @@ $translations = [
         'no_results_text' => 'With {vram} GB of VRAM{context}, no model can be loaded.',
         'no_results_tip' => 'Try reducing the context constraint.',
         'and_context' => ' and a minimum context of {context}K',
-        'and_more' => '... and {count} more configurations'
+        'and_more' => '... and {count} more configurations',
+        'badge_code' => '💻 Code',
+        'badge_vision' => '👁️ Vision',
+        'badge_reasoning' => '🧠 Reasoning',
+        'badge_multilingual' => '🌍 Multilingual'
     ],
     'fr' => [
         'title' => 'Optimisateur LLM',
@@ -72,7 +76,11 @@ $translations = [
         'no_results_text' => 'Avec {vram} GB de VRAM{context}, aucun modèle ne peut être chargé.',
         'no_results_tip' => 'Essayez de réduire la contrainte de contexte.',
         'and_context' => ' et un contexte minimum de {context}K',
-        'and_more' => '... et {count} autres configurations'
+        'and_more' => '... et {count} autres configurations',
+        'badge_code' => '💻 Code',
+        'badge_vision' => '👁️ Vision',
+        'badge_reasoning' => '🧠 Raisonnement',
+        'badge_multilingual' => '🌍 Multilingue'
     ]
 ];
 
@@ -85,6 +93,27 @@ function translate($key, $replacements = []) {
         $text = str_replace('{' . $placeholder . '}', $value, $text);
     }
     return $text;
+}
+
+function render_tags($tags) {
+    if (empty($tags)) return '';
+    
+    $badges = [];
+    $tag_map = [
+        'code' => ['class' => 'tag-code', 'label' => 'badge_code'],
+        'vision' => ['class' => 'tag-vision', 'label' => 'badge_vision'],
+        'reasoning' => ['class' => 'tag-reasoning', 'label' => 'badge_reasoning'],
+        'multilingual' => ['class' => 'tag-multilingual', 'label' => 'badge_multilingual']
+    ];
+    
+    foreach ($tags as $tag) {
+        if (isset($tag_map[$tag])) {
+            $badges[] = '<span class="tag-badge ' . $tag_map[$tag]['class'] . '">' . 
+                       translate($tag_map[$tag]['label']) . '</span>';
+        }
+    }
+    
+    return implode('', $badges);
 }
 ?>
 <!DOCTYPE html>
@@ -294,6 +323,38 @@ function translate($key, $replacements = []) {
             font-size: 18px;
             font-weight: 700;
             color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .tag-code {
+            background: #667eea;
+            color: white;
+        }
+        
+        .tag-vision {
+            background: #764ba2;
+            color: white;
+        }
+        
+        .tag-reasoning {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .tag-multilingual {
+            background: #10b981;
+            color: white;
         }
         
         .model-badge {
@@ -394,12 +455,11 @@ function translate($key, $replacements = []) {
             <div class="form-group">
                 <label><?= translate('gpu_preset') ?></label>
                 <div class="gpu-presets">
-                    <button type="button" class="gpu-preset-btn" data-vram="8">RTX 4060<br>8 GB</button>
-                    <button type="button" class="gpu-preset-btn" data-vram="12">RTX 4070<br>12 GB</button>
-                    <button type="button" class="gpu-preset-btn" data-vram="16">RTX 4070 Ti<br>16 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="8">RTX 5060<br>8 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="12">RTX 5070<br>12 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="16">RTX 5070 Ti<br>16 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="24">RTX 4090<br>24 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="32">RTX 5090<br>32 GB</button>
+					<button type="button" class="gpu-preset-btn" data-vram="24">RTX 5090<br>32 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="24">L4/A10<br>24 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="48">L40S<br>48 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="80">H100/A100<br>80 GB</button>
@@ -449,31 +509,75 @@ function translate($key, $replacements = []) {
             $context_constraint = intval($_POST['context_constraint']);
             $priority = $_POST['priority'];
             
-            // Popular LLM models
+            // Popular LLM models with tags
             $models = [
-				['name' => 'Gemma 2 2B', 'params' => 2, 'category' => 'Tiny'],
-				['name' => 'Gemma 3 2B', 'params' => 2, 'category' => 'Tiny'],
-                ['name' => 'Phi-3 Mini 3.8B', 'params' => 3.8, 'category' => 'Tiny'],
-                ['name' => 'Llama 3.1 8B', 'params' => 8, 'category' => 'Small'],
-                ['name' => 'Mistral 7B', 'params' => 7, 'category' => 'Small'],
-                ['name' => 'Gemma 2 9B', 'params' => 9, 'category' => 'Small'],
-				['name' => 'Gemma 3 9B', 'params' => 9, 'category' => 'Small'],
-				['name' => 'Phi-4 14B', 'params' => 14, 'category' => 'Small'],
-                ['name' => 'Qwen 2.5 32B', 'params' => 32, 'category' => 'Medium'],
-                ['name' => 'Qwen 2.5 14B', 'params' => 14, 'category' => 'Medium'],
-				['name' => 'Qwen3 30B', 'params' => 30, 'category' => 'Medium'],
-				['name' => 'Yi 34B', 'params' => 34, 'category' => 'Medium'],
-                ['name' => 'Llama 3.1 70B', 'params' => 70, 'category' => 'Large'],
-                ['name' => 'Mixtral 8x7B', 'params' => 47, 'category' => 'MoE'],
-                ['name' => 'Llama 3.3 70B', 'params' => 70, 'category' => 'Large'],
-				['name' => 'Qwen 2.5 72B', 'params' => 72, 'category' => 'Large'],
-				['name' => 'Llama 4 Scout', 'params' => 70, 'category' => 'Large'],
-				['name' => 'GPT-OSS 120B', 'params' => 120, 'category' => 'Large'],
-				['name' => 'DeepSeek-V3', 'params' => 671, 'category' => 'Huge'], // MoE 37B actifs
-				['name' => 'DeepSeek-R1', 'params' => 671, 'category' => 'Huge'], // MoE
-				['name' => 'Qwen3 235B', 'params' => 235, 'category' => 'Huge'], // MoE 22B actifs
-				['name' => 'Llama 3.1 405B', 'params' => 405, 'category' => 'Huge'],
-				['name' => 'Llama 4 Behemoth', 'params' => 400, 'category' => 'Huge'],
+                // ===== TINY (< 5B) - GPU 8-12 GB =====
+                ['name' => 'Gemma 3 2B', 'params' => 2, 'tags' => []],
+                ['name' => 'Qwen3 0.6B', 'params' => 0.6, 'tags' => ['multilingual']],
+                ['name' => 'Qwen3 1.7B', 'params' => 1.7, 'tags' => ['multilingual']],
+                ['name' => 'Qwen3 4B', 'params' => 4, 'tags' => ['multilingual']],
+                
+                // ===== SMALL (5-15B) - GPU 16-24 GB =====
+                ['name' => 'Llama 3.1 8B', 'params' => 8, 'tags' => []],
+                ['name' => 'Mistral 7B', 'params' => 7, 'tags' => []],
+                ['name' => 'Gemma 3 9B', 'params' => 9, 'tags' => []],
+                ['name' => 'Qwen3 8B', 'params' => 8, 'tags' => ['multilingual']],
+                ['name' => 'Phi-4 14B', 'params' => 14, 'tags' => ['reasoning']],
+                
+                // ===== CODING SPECIALISTS - Small =====
+                ['name' => 'Qwen 2.5 Coder 7B', 'params' => 7, 'tags' => ['code', 'multilingual']],
+                ['name' => 'DeepSeek Coder V2 Lite 16B', 'params' => 16, 'tags' => ['code']],
+                ['name' => 'StarCoder2 15B', 'params' => 15, 'tags' => ['code']],
+                ['name' => 'Codestral 22B', 'params' => 22, 'tags' => ['code']],
+                
+                // ===== MULTIMODAL - Small =====
+                ['name' => 'Qwen2.5-VL 3B', 'params' => 3, 'tags' => ['vision', 'multilingual']],
+                ['name' => 'Qwen2.5-VL 7B', 'params' => 7, 'tags' => ['vision', 'multilingual']],
+                ['name' => 'Pixtral 12B', 'params' => 12, 'tags' => ['vision']],
+                
+                // ===== MEDIUM (15-50B) - GPU 48-80 GB =====
+                ['name' => 'Qwen3 14B', 'params' => 14, 'tags' => ['multilingual']],
+                ['name' => 'Qwen3 30B (MoE 3B active)', 'params' => 30, 'tags' => ['multilingual']],
+                ['name' => 'Qwen3 32B', 'params' => 32, 'tags' => ['multilingual']],
+                ['name' => 'Yi 34B', 'params' => 34, 'tags' => ['multilingual']],
+                ['name' => 'Mixtral 8x7B (MoE)', 'params' => 47, 'tags' => []],
+                
+                // ===== CODING SPECIALISTS - Medium =====
+                ['name' => 'Qwen 2.5 Coder 32B', 'params' => 32, 'tags' => ['code', 'multilingual']],
+                ['name' => 'DeepSeek Coder V2 236B (MoE 21B active)', 'params' => 236, 'tags' => ['code']],
+                
+                // ===== MULTIMODAL - Medium =====
+                ['name' => 'Qwen2.5-VL 32B', 'params' => 32, 'tags' => ['vision', 'multilingual']],
+                ['name' => 'Qwen3-VL 32B', 'params' => 32, 'tags' => ['vision', 'multilingual']],
+                ['name' => 'Ovis2 34B', 'params' => 34, 'tags' => ['vision']],
+                
+                // ===== LARGE (50-150B) - Multi-GPU =====
+                ['name' => 'Llama 3.1 70B', 'params' => 70, 'tags' => []],
+                ['name' => 'Llama 3.3 70B', 'params' => 70, 'tags' => []],
+                ['name' => 'Llama 4 Scout', 'params' => 70, 'tags' => []],
+                ['name' => 'Llama 4 Maverick', 'params' => 70, 'tags' => []],
+                ['name' => 'GPT-OSS 120B', 'params' => 120, 'tags' => []],
+                ['name' => 'Mixtral 8x22B (MoE)', 'params' => 141, 'tags' => []],
+                
+                // ===== MULTIMODAL - Large =====
+                ['name' => 'Qwen2.5-VL 72B', 'params' => 72, 'tags' => ['vision', 'multilingual']],
+                ['name' => 'InternVL3 78B', 'params' => 78, 'tags' => ['vision']],
+                ['name' => 'GLM-4.6V (MoE ~12B active)', 'params' => 100, 'tags' => ['vision', 'multilingual']],
+                
+                // ===== HUGE (150B+) - Infrastructure datacenter =====
+                ['name' => 'MiniMax-M2.1 230B (MoE 10B active)', 'params' => 230, 'tags' => ['code']],
+                ['name' => 'Qwen3 235B (MoE 22B active)', 'params' => 235, 'tags' => ['multilingual']],
+                ['name' => 'Llama 3.1 405B', 'params' => 405, 'tags' => []],
+                ['name' => 'Llama 4 Behemoth', 'params' => 400, 'tags' => []],
+                ['name' => 'DeepSeek-V3 671B (MoE 37B active)', 'params' => 671, 'tags' => ['code']],
+                ['name' => 'DeepSeek-R1 671B (MoE)', 'params' => 671, 'tags' => ['reasoning', 'code']],
+                
+                // ===== CODING SPECIALISTS - Huge =====
+                ['name' => 'Qwen3-Coder 480B (MoE 35B active)', 'params' => 480, 'tags' => ['code', 'multilingual']],
+                ['name' => 'Kimi K2 (~100B+)', 'params' => 100, 'tags' => ['code']],
+                
+                // ===== MULTIMODAL - Huge =====
+                ['name' => 'Qwen3-VL 235B (MoE 22B active)', 'params' => 235, 'tags' => ['vision', 'multilingual']],
             ];
             
             // Available precisions
@@ -562,7 +666,10 @@ function translate($key, $replacements = []) {
                     
                     echo '<div class="' . $card_class . '">';
                     echo '<div class="model-header">';
-                    echo '<div class="model-name">' . htmlspecialchars($config['model']['name']) . '</div>';
+                    echo '<div class="model-name">';
+                    echo '<span>' . htmlspecialchars($config['model']['name']) . '</span>';
+                    echo render_tags($config['model']['tags']);
+                    echo '</div>';
                     echo '<div class="model-badge ' . $badge_class . '">' . $badge_text . '</div>';
                     echo '</div>';
                     echo '<div class="model-details">';
@@ -597,7 +704,10 @@ function translate($key, $replacements = []) {
                     foreach ($other_results as $config) {
                         echo '<div class="model-card">';
                         echo '<div class="model-header">';
-                        echo '<div class="model-name">' . htmlspecialchars($config['model']['name']) . ' - ' . $config['precision'] . '</div>';
+                        echo '<div class="model-name">';
+                        echo '<span>' . htmlspecialchars($config['model']['name']) . ' - ' . $config['precision'] . '</span>';
+                        echo render_tags($config['model']['tags']);
+                        echo '</div>';
                         echo '</div>';
                         echo '<div class="model-details">';
                         echo '<div class="detail-item">';
