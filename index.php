@@ -97,7 +97,7 @@ function translate($key, $replacements = []) {
 
 function render_tags($tags) {
     if (empty($tags)) return '';
-    
+
     $badges = [];
     $tag_map = [
         'code' => ['class' => 'tag-code', 'label' => 'badge_code'],
@@ -105,14 +105,14 @@ function render_tags($tags) {
         'reasoning' => ['class' => 'tag-reasoning', 'label' => 'badge_reasoning'],
         'multilingual' => ['class' => 'tag-multilingual', 'label' => 'badge_multilingual']
     ];
-    
+
     foreach ($tags as $tag) {
         if (isset($tag_map[$tag])) {
-            $badges[] = '<span class="tag-badge ' . $tag_map[$tag]['class'] . '">' . 
+            $badges[] = '<span class="tag-badge ' . $tag_map[$tag]['class'] . '">' .
                        translate($tag_map[$tag]['label']) . '</span>';
         }
     }
-    
+
     return implode('', $badges);
 }
 ?>
@@ -129,14 +129,14 @@ function render_tags($tags) {
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .lang-selector {
             position: fixed;
             top: 20px;
@@ -145,7 +145,7 @@ function render_tags($tags) {
             gap: 10px;
             z-index: 1000;
         }
-        
+
         .lang-btn {
             padding: 8px 16px;
             background: rgba(255, 255, 255, 0.9);
@@ -158,18 +158,18 @@ function render_tags($tags) {
             text-decoration: none;
             color: #333;
         }
-        
+
         .lang-btn:hover {
             background: white;
             transform: translateY(-2px);
         }
-        
+
         .lang-btn.active {
             background: #667eea;
             color: white;
             border-color: #667eea;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -179,36 +179,36 @@ function render_tags($tags) {
             padding: 40px;
             margin-top: 60px;
         }
-        
+
         h1 {
             color: #333;
             margin-bottom: 10px;
             font-size: 28px;
         }
-        
+
         .subtitle {
             color: #666;
             margin-bottom: 30px;
             font-size: 14px;
         }
-        
+
         .form-group {
             margin-bottom: 25px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
             color: #333;
             font-weight: 500;
         }
-        
+
         .helper-text {
             font-size: 12px;
             color: #999;
             margin-top: 4px;
         }
-        
+
         input[type="number"], select {
             width: 100%;
             padding: 12px;
@@ -217,46 +217,47 @@ function render_tags($tags) {
             font-size: 16px;
             transition: border-color 0.3s;
         }
-        
+
         input[type="number"]:focus, select:focus {
             outline: none;
             border-color: #667eea;
         }
-        
+
         .gpu-presets {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 10px;
             margin-bottom: 20px;
         }
-        
+
         .gpu-preset-btn {
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #e0e0e0;
             background: white;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.4;
         }
-        
+
         .gpu-preset-btn:hover {
             border-color: #667eea;
             background: #f0f4ff;
         }
-        
+
         .gpu-preset-btn.active {
             border-color: #667eea;
             background: #667eea;
             color: white;
         }
-        
+
         .inline-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
-        
+
         button[type="submit"] {
             width: 100%;
             padding: 14px;
@@ -269,22 +270,22 @@ function render_tags($tags) {
             cursor: pointer;
             transition: transform 0.2s;
         }
-        
+
         button[type="submit"]:hover {
             transform: translateY(-2px);
         }
-        
+
         .results {
             margin-top: 30px;
         }
-        
+
         .results-section {
             background: #f8f9fa;
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 20px;
         }
-        
+
         .results-section h3 {
             color: #333;
             margin-bottom: 20px;
@@ -292,7 +293,7 @@ function render_tags($tags) {
             border-left: 4px solid #667eea;
             padding-left: 15px;
         }
-        
+
         .model-card {
             background: white;
             padding: 20px;
@@ -301,24 +302,24 @@ function render_tags($tags) {
             border: 2px solid #e0e0e0;
             transition: all 0.2s;
         }
-        
+
         .model-card:hover {
             border-color: #667eea;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
         }
-        
+
         .model-card.optimal {
             border-color: #4caf50;
             background: #f1f8f4;
         }
-        
+
         .model-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
-        
+
         .model-name {
             font-size: 18px;
             font-weight: 700;
@@ -328,7 +329,7 @@ function render_tags($tags) {
             gap: 8px;
             flex-wrap: wrap;
         }
-        
+
         .tag-badge {
             padding: 3px 10px;
             border-radius: 12px;
@@ -336,55 +337,55 @@ function render_tags($tags) {
             font-weight: 600;
             white-space: nowrap;
         }
-        
+
         .tag-code {
             background: #667eea;
             color: white;
         }
-        
+
         .tag-vision {
             background: #764ba2;
             color: white;
         }
-        
+
         .tag-reasoning {
             background: #f59e0b;
             color: white;
         }
-        
+
         .tag-multilingual {
             background: #10b981;
             color: white;
         }
-        
+
         .model-badge {
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
         }
-        
+
         .badge-optimal {
             background: #4caf50;
             color: white;
         }
-        
+
         .badge-possible {
             background: #2196f3;
             color: white;
         }
-        
+
         .model-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
         }
-        
+
         .detail-item {
             display: flex;
             flex-direction: column;
         }
-        
+
         .detail-label {
             font-size: 11px;
             text-transform: uppercase;
@@ -392,13 +393,13 @@ function render_tags($tags) {
             margin-bottom: 4px;
             letter-spacing: 0.5px;
         }
-        
+
         .detail-value {
             font-size: 16px;
             font-weight: 600;
             color: #333;
         }
-        
+
         .info-box {
             background: #e3f2fd;
             border-left: 4px solid #2196f3;
@@ -407,27 +408,27 @@ function render_tags($tags) {
             border-radius: 8px;
             font-size: 14px;
         }
-        
+
         .no-results {
             text-align: center;
             padding: 40px;
             color: #999;
         }
-        
+
         @media (max-width: 768px) {
             .inline-group {
                 grid-template-columns: 1fr;
             }
-            
+
             .gpu-presets {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
+
             .container {
                 padding: 25px;
                 margin-top: 80px;
             }
-            
+
             .lang-selector {
                 top: 10px;
                 right: 10px;
@@ -440,45 +441,51 @@ function render_tags($tags) {
         <a href="?lang=en" class="lang-btn <?= $lang === 'en' ? 'active' : '' ?>">EN</a>
         <a href="?lang=fr" class="lang-btn <?= $lang === 'fr' ? 'active' : '' ?>">FR</a>
     </div>
-    
+
     <div class="container">
         <h1>🎯 <?= translate('title') ?></h1>
         <p class="subtitle"><?= translate('subtitle') ?></p>
-        
+
         <div class="info-box">
             <strong>💡 <?= translate('how_it_works') ?></strong> <?= translate('how_it_works_text') ?>
         </div>
-        
+
         <form method="POST" id="mainForm">
             <input type="hidden" name="lang" value="<?= $lang ?>">
-            
+
             <div class="form-group">
                 <label><?= translate('gpu_preset') ?></label>
                 <div class="gpu-presets">
+                    <!-- Consumer NVIDIA RTX 50 series -->
                     <button type="button" class="gpu-preset-btn" data-vram="8">RTX 5060<br>8 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="12">RTX 5070<br>12 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="16">RTX 5070 Ti<br>16 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="24">RTX 5080<br>24 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="32">RTX 5090<br>32 GB</button>
+                    <!-- Consumer NVIDIA RTX 40 series -->
+                    <button type="button" class="gpu-preset-btn" data-vram="16">RTX 4080<br>16 GB</button>
                     <button type="button" class="gpu-preset-btn" data-vram="24">RTX 4090<br>24 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="32">RTX 5090<br>32 GB</button>
-					<!-- NVIDIA 2024-2025 -->
-					<button type="button" class="gpu-preset-btn" data-vram="48">L40S<br>48 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="80">H100<br>80 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="94">H200<br>94 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="141">H200<br>141 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="192">B100<br>192 GB</button>
-					<button type="button" class="gpu-preset-btn" data-vram="288">B200<br>288 GB</button>
-					<!-- AMD 2024-2025 -->
-					<button type="button" class="gpu-preset-btn" data-vram="192">MI300X<br>192 GB</button>
+                    <!-- NVIDIA Data Center -->
+                    <button type="button" class="gpu-preset-btn" data-vram="40">A100<br>40 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="80">A100 / H100<br>80 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="48">L40S<br>48 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="94">H200<br>94 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="141">H200 SXM<br>141 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="192">B100<br>192 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="288">B200<br>288 GB</button>
+                    <!-- AMD -->
+                    <button type="button" class="gpu-preset-btn" data-vram="192">MI300X<br>192 GB</button>
+                    <button type="button" class="gpu-preset-btn" data-vram="256">MI325X<br>256 GB</button>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="vram"><?= translate('vram_available') ?></label>
-                <input type="number" id="vram" name="vram" step="0.1" min="1" 
-                       value="<?= $_POST['vram'] ?? '16' ?>" required>
+                <input type="number" id="vram" name="vram" step="0.1" min="1"
+                       value="<?= htmlspecialchars($_POST['vram'] ?? '16') ?>" required>
                 <div class="helper-text"><?= translate('vram_helper') ?></div>
             </div>
-            
+
             <div class="inline-group">
                 <div class="form-group">
                     <label for="context_constraint"><?= translate('context_constraint') ?></label>
@@ -490,10 +497,12 @@ function render_tags($tags) {
                         <option value="32768" <?= ($_POST['context_constraint'] ?? '') == '32768' ? 'selected' : '' ?>>32K <?= translate('context_min') ?></option>
                         <option value="65536" <?= ($_POST['context_constraint'] ?? '') == '65536' ? 'selected' : '' ?>>64K <?= translate('context_min') ?></option>
                         <option value="131072" <?= ($_POST['context_constraint'] ?? '') == '131072' ? 'selected' : '' ?>>128K <?= translate('context_min') ?></option>
+                        <option value="262144" <?= ($_POST['context_constraint'] ?? '') == '262144' ? 'selected' : '' ?>>256K <?= translate('context_min') ?></option>
+                        <option value="524288" <?= ($_POST['context_constraint'] ?? '') == '524288' ? 'selected' : '' ?>>512K <?= translate('context_min') ?></option>
                     </select>
                     <div class="helper-text"><?= translate('context_helper') ?></div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="priority"><?= translate('priority') ?></label>
                     <select id="priority" name="priority">
@@ -505,124 +514,150 @@ function render_tags($tags) {
                     <div class="helper-text"><?= translate('priority_helper') ?></div>
                 </div>
             </div>
-            
+
             <button type="submit"><?= translate('analyze_btn') ?></button>
         </form>
-        
+
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $vram_available = floatval($_POST['vram']);
             $context_constraint = intval($_POST['context_constraint']);
-            $priority = $_POST['priority'];
-            
-            // Popular LLM models with tags
+            $priority = $_POST['priority'] ?? 'balanced';
+
+            // LLM models database (updated February 2026)
             $models = [
                 // ===== TINY (< 5B) - GPU 8-12 GB =====
-                ['name' => 'Gemma 3 2B', 'params' => 2, 'tags' => []],
-                ['name' => 'Qwen3 0.6B', 'params' => 0.6, 'tags' => ['multilingual']],
-                ['name' => 'Qwen3 1.7B', 'params' => 1.7, 'tags' => ['multilingual']],
-                ['name' => 'Qwen3 4B', 'params' => 4, 'tags' => ['multilingual']],
-                
+                ['name' => 'Llama 3.2 1B',         'params' => 1,    'tags' => []],
+                ['name' => 'Llama 3.2 3B',         'params' => 3,    'tags' => []],
+                ['name' => 'Gemma 3 1B',            'params' => 1,    'tags' => []],
+                ['name' => 'Gemma 3 4B',            'params' => 4,    'tags' => []],
+                ['name' => 'Phi-4 Mini 3.8B',       'params' => 3.8,  'tags' => ['reasoning']],
+                ['name' => 'Qwen3 0.6B',            'params' => 0.6,  'tags' => ['multilingual']],
+                ['name' => 'Qwen3 1.7B',            'params' => 1.7,  'tags' => ['multilingual']],
+                ['name' => 'Qwen3 4B',              'params' => 4,    'tags' => ['multilingual']],
+                ['name' => 'Qwen2.5 3B',            'params' => 3,    'tags' => ['multilingual']],
+
                 // ===== SMALL (5-15B) - GPU 16-24 GB =====
-                ['name' => 'Llama 3.1 8B', 'params' => 8, 'tags' => []],
-                ['name' => 'Mistral 7B', 'params' => 7, 'tags' => []],
-                ['name' => 'Gemma 3 9B', 'params' => 9, 'tags' => []],
-                ['name' => 'Qwen3 8B', 'params' => 8, 'tags' => ['multilingual']],
-                ['name' => 'Phi-4 14B', 'params' => 14, 'tags' => ['reasoning']],
-                
+                ['name' => 'Llama 3.1 8B',          'params' => 8,    'tags' => []],
+                ['name' => 'Mistral 7B',             'params' => 7,    'tags' => []],
+                ['name' => 'Mistral Nemo 12B',       'params' => 12,   'tags' => []],
+                ['name' => 'Gemma 3 12B',            'params' => 12,   'tags' => []],
+                ['name' => 'Qwen3 8B',               'params' => 8,    'tags' => ['multilingual']],
+                ['name' => 'Qwen2.5 7B',             'params' => 7,    'tags' => ['multilingual']],
+                ['name' => 'Qwen2.5 14B',            'params' => 14,   'tags' => ['multilingual']],
+                ['name' => 'Phi-4 14B',              'params' => 14,   'tags' => ['reasoning']],
+                ['name' => 'InternLM3 8B',           'params' => 8,    'tags' => ['multilingual']],
+
                 // ===== CODING SPECIALISTS - Small =====
-                ['name' => 'Qwen 2.5 Coder 7B', 'params' => 7, 'tags' => ['code', 'multilingual']],
+                ['name' => 'Qwen2.5 Coder 7B',      'params' => 7,    'tags' => ['code', 'multilingual']],
+                ['name' => 'Granite 3.3 8B',         'params' => 8,    'tags' => ['code']],
+                ['name' => 'StarCoder2 15B',          'params' => 15,   'tags' => ['code']],
+                ['name' => 'Codestral 22B',           'params' => 22,   'tags' => ['code']],
                 ['name' => 'DeepSeek Coder V2 Lite 16B', 'params' => 16, 'tags' => ['code']],
-                ['name' => 'StarCoder2 15B', 'params' => 15, 'tags' => ['code']],
-                ['name' => 'Codestral 22B', 'params' => 22, 'tags' => ['code']],
-                
+
+                // ===== REASONING - Small =====
+                ['name' => 'DeepSeek-R1 Distill 7B',  'params' => 7,  'tags' => ['reasoning']],
+                ['name' => 'DeepSeek-R1 Distill 8B',  'params' => 8,  'tags' => ['reasoning']],
+                ['name' => 'DeepSeek-R1 Distill 14B', 'params' => 14, 'tags' => ['reasoning']],
+
                 // ===== MULTIMODAL - Small =====
-                ['name' => 'Qwen2.5-VL 3B', 'params' => 3, 'tags' => ['vision', 'multilingual']],
-                ['name' => 'Qwen2.5-VL 7B', 'params' => 7, 'tags' => ['vision', 'multilingual']],
-                ['name' => 'Pixtral 12B', 'params' => 12, 'tags' => ['vision']],
-                
+                ['name' => 'Llama 3.2 11B Vision',   'params' => 11,  'tags' => ['vision']],
+                ['name' => 'Qwen2.5-VL 3B',          'params' => 3,   'tags' => ['vision', 'multilingual']],
+                ['name' => 'Qwen2.5-VL 7B',          'params' => 7,   'tags' => ['vision', 'multilingual']],
+                ['name' => 'Pixtral 12B',             'params' => 12,  'tags' => ['vision']],
+
                 // ===== MEDIUM (15-50B) - GPU 48-80 GB =====
-                ['name' => 'Qwen3 14B', 'params' => 14, 'tags' => ['multilingual']],
+                ['name' => 'Gemma 3 27B',             'params' => 27,  'tags' => []],
+                ['name' => 'Mistral Small 3.1 24B',   'params' => 24,  'tags' => []],
+                ['name' => 'Qwen3 14B',               'params' => 14,  'tags' => ['multilingual']],
+                ['name' => 'Qwen3 32B',               'params' => 32,  'tags' => ['multilingual']],
                 ['name' => 'Qwen3 30B (MoE 3B active)', 'params' => 30, 'tags' => ['multilingual']],
-                ['name' => 'Qwen3 32B', 'params' => 32, 'tags' => ['multilingual']],
-                ['name' => 'Yi 34B', 'params' => 34, 'tags' => ['multilingual']],
-                ['name' => 'Mixtral 8x7B (MoE)', 'params' => 47, 'tags' => []],
-                
+                ['name' => 'Qwen2.5 32B',             'params' => 32,  'tags' => ['multilingual']],
+                ['name' => 'Yi 34B',                  'params' => 34,  'tags' => ['multilingual']],
+                ['name' => 'Mixtral 8x7B (MoE)',      'params' => 47,  'tags' => []],
+
+                // ===== REASONING - Medium =====
+                ['name' => 'DeepSeek-R1 Distill 32B', 'params' => 32, 'tags' => ['reasoning']],
+
                 // ===== CODING SPECIALISTS - Medium =====
-                ['name' => 'Qwen 2.5 Coder 32B', 'params' => 32, 'tags' => ['code', 'multilingual']],
-                ['name' => 'DeepSeek Coder V2 236B (MoE 21B active)', 'params' => 236, 'tags' => ['code']],
-                
+                ['name' => 'Qwen2.5 Coder 32B',      'params' => 32,  'tags' => ['code', 'multilingual']],
+
                 // ===== MULTIMODAL - Medium =====
-                ['name' => 'Qwen2.5-VL 32B', 'params' => 32, 'tags' => ['vision', 'multilingual']],
-                ['name' => 'Qwen3-VL 32B', 'params' => 32, 'tags' => ['vision', 'multilingual']],
-                ['name' => 'Ovis2 34B', 'params' => 34, 'tags' => ['vision']],
-                
+                ['name' => 'Qwen2.5-VL 32B',         'params' => 32,  'tags' => ['vision', 'multilingual']],
+                ['name' => 'Qwen3-VL 32B',            'params' => 32,  'tags' => ['vision', 'multilingual']],
+                ['name' => 'Ovis2 34B',               'params' => 34,  'tags' => ['vision']],
+
                 // ===== LARGE (50-150B) - Multi-GPU =====
-                ['name' => 'Llama 3.1 70B', 'params' => 70, 'tags' => []],
-                ['name' => 'Llama 3.3 70B', 'params' => 70, 'tags' => []],
-                ['name' => 'Llama 4 Scout', 'params' => 70, 'tags' => []],
-                ['name' => 'Llama 4 Maverick', 'params' => 70, 'tags' => []],
-                ['name' => 'GPT-OSS 120B', 'params' => 120, 'tags' => []],
-                ['name' => 'Mixtral 8x22B (MoE)', 'params' => 141, 'tags' => []],
-                
+                ['name' => 'Llama 3.1 70B',           'params' => 70,  'tags' => []],
+                ['name' => 'Llama 3.2 90B Vision',    'params' => 90,  'tags' => ['vision']],
+                ['name' => 'Llama 3.3 70B',           'params' => 70,  'tags' => []],
+                ['name' => 'Qwen2.5 72B',             'params' => 72,  'tags' => ['multilingual']],
+                ['name' => 'Llama 4 Scout (MoE 17B active)', 'params' => 109, 'tags' => ['multilingual']],
+                ['name' => 'Mistral Large 2 123B',    'params' => 123, 'tags' => []],
+                ['name' => 'Mixtral 8x22B (MoE)',     'params' => 141, 'tags' => []],
+
+                // ===== REASONING - Large =====
+                ['name' => 'DeepSeek-R1 Distill 70B', 'params' => 70, 'tags' => ['reasoning']],
+
                 // ===== MULTIMODAL - Large =====
-                ['name' => 'Qwen2.5-VL 72B', 'params' => 72, 'tags' => ['vision', 'multilingual']],
-                ['name' => 'InternVL3 78B', 'params' => 78, 'tags' => ['vision']],
-                ['name' => 'GLM-4.6V (MoE ~12B active)', 'params' => 100, 'tags' => ['vision', 'multilingual']],
-                
-                // ===== HUGE (150B+) - Infrastructure datacenter =====
+                ['name' => 'Qwen2.5-VL 72B',         'params' => 72,  'tags' => ['vision', 'multilingual']],
+                ['name' => 'InternVL3 78B',           'params' => 78,  'tags' => ['vision']],
+                ['name' => 'GLM-4V 100B (MoE ~12B active)', 'params' => 100, 'tags' => ['vision', 'multilingual']],
+
+                // ===== HUGE (150B+) - Data center infrastructure =====
                 ['name' => 'MiniMax-M2.1 230B (MoE 10B active)', 'params' => 230, 'tags' => ['code']],
-                ['name' => 'Qwen3 235B (MoE 22B active)', 'params' => 235, 'tags' => ['multilingual']],
-                ['name' => 'Llama 3.1 405B', 'params' => 405, 'tags' => []],
-                ['name' => 'Llama 4 Behemoth', 'params' => 400, 'tags' => []],
-                ['name' => 'DeepSeek-V3 671B (MoE 37B active)', 'params' => 671, 'tags' => ['code']],
-                ['name' => 'DeepSeek-R1 671B (MoE)', 'params' => 671, 'tags' => ['reasoning', 'code']],
-                
+                ['name' => 'Qwen3 235B (MoE 22B active)',         'params' => 235, 'tags' => ['multilingual']],
+                ['name' => 'Llama 4 Maverick (MoE 17B active)',   'params' => 400, 'tags' => ['multilingual']],
+                ['name' => 'Llama 3.1 405B',          'params' => 405, 'tags' => []],
+                ['name' => 'DeepSeek-V3 671B (MoE 37B active)',   'params' => 671, 'tags' => ['code']],
+                ['name' => 'DeepSeek-R1 671B (MoE)',  'params' => 671, 'tags' => ['reasoning', 'code']],
+
                 // ===== CODING SPECIALISTS - Huge =====
-                ['name' => 'Qwen3-Coder 480B (MoE 35B active)', 'params' => 480, 'tags' => ['code', 'multilingual']],
-                ['name' => 'Kimi K2 (~100B+)', 'params' => 100, 'tags' => ['code']],
-                
+                ['name' => 'DeepSeek Coder V2 236B (MoE 21B active)', 'params' => 236, 'tags' => ['code']],
+                ['name' => 'Qwen3-Coder 480B (MoE 35B active)',   'params' => 480, 'tags' => ['code', 'multilingual']],
+                ['name' => 'Kimi K2 1T (MoE 32B active)',         'params' => 1000, 'tags' => ['code']],
+
                 // ===== MULTIMODAL - Huge =====
-                ['name' => 'Qwen3-VL 235B (MoE 22B active)', 'params' => 235, 'tags' => ['vision', 'multilingual']],
+                ['name' => 'Qwen3-VL 235B (MoE 22B active)',      'params' => 235, 'tags' => ['vision', 'multilingual']],
             ];
-            
+
             // Available precisions
             $precisions = [
                 'FP16' => 2,
-                'FP8' => 1,
-                'FP4' => 0.5,
+                'FP8'  => 1,
+                'FP4'  => 0.5,
             ];
-            
-            // Context sizes to test
-            $context_sizes = [4096, 8192, 16384, 32768, 65536, 131072, 262144];
-            
+
+            // Standard context sizes to test (up to 512K)
+            $context_sizes = [4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288];
+
             $possibilities = [];
-            
+
             foreach ($models as $model) {
                 foreach ($precisions as $prec_name => $prec_factor) {
                     $model_memory = $model['params'] * $prec_factor;
-                    
+
                     // 5% safety margin for overhead
                     $usable_vram = $vram_available * 0.95;
                     $vram_for_context = $usable_vram - $model_memory;
-                    
+
                     if ($vram_for_context > 0) {
                         // Calculate maximum possible context
                         $max_context_tokens = floor($vram_for_context / 0.0005);
-                        
-                        // Find closest standard context
+
+                        // Find largest standard context that fits
                         $optimal_context = 0;
                         foreach ($context_sizes as $ctx) {
                             if ($ctx <= $max_context_tokens) {
                                 $optimal_context = $ctx;
                             }
                         }
-                        
+
                         // Check if it meets the constraint
                         if ($optimal_context >= $context_constraint && $optimal_context > 0) {
                             $context_memory = $optimal_context * 0.0005;
                             $total_vram = $model_memory + $context_memory;
-                            
+
                             // Score for sorting
                             $score = 0;
                             if ($priority === 'model_size') {
@@ -634,64 +669,66 @@ function render_tags($tags) {
                             } else { // balanced
                                 $score = $model['params'] * 100 + $optimal_context / 100 - $prec_factor * 50;
                             }
-                            
+
                             $possibilities[] = [
-                                'model' => $model,
-                                'precision' => $prec_name,
-                                'precision_factor' => $prec_factor,
-                                'context' => $optimal_context,
-                                'model_memory' => $model_memory,
-                                'context_memory' => $context_memory,
-                                'total_vram' => $total_vram,
-                                'vram_usage_percent' => ($total_vram / $vram_available) * 100,
-                                'score' => $score,
-                                'max_possible_context' => $max_context_tokens
+                                'model'               => $model,
+                                'precision'           => $prec_name,
+                                'precision_factor'    => $prec_factor,
+                                'context'             => $optimal_context,
+                                'model_memory'        => $model_memory,
+                                'context_memory'      => $context_memory,
+                                'total_vram'          => $total_vram,
+                                'vram_usage_percent'  => ($total_vram / $vram_available) * 100,
+                                'score'               => $score,
+                                'max_possible_context' => $max_context_tokens,
                             ];
                         }
                     }
                 }
             }
-            
-            // Sort by score
-            usort($possibilities, function($a, $b) {
-                return $b['score'] <=> $a['score'];
-            });
-            
+
+            // Sort by score descending
+            usort($possibilities, fn($a, $b) => $b['score'] <=> $a['score']);
+
             echo '<div class="results">';
-            
+
             if (count($possibilities) > 0) {
+                // Build top 3 with diversity (at least one general model)
+                $top_results = [$possibilities[0]];
+                $seen_keys   = [$possibilities[0]['model']['name'] . '_' . $possibilities[0]['precision']];
+
+                // Find best general model (no code/vision tags) not already selected
+                foreach ($possibilities as $config) {
+                    if (count($top_results) >= 3) break;
+                    $key  = $config['model']['name'] . '_' . $config['precision'];
+                    $tags = $config['model']['tags'];
+                    $is_general = empty($tags) || (!in_array('code', $tags) && !in_array('vision', $tags));
+                    if ($is_general && !in_array($key, $seen_keys)) {
+                        $top_results[] = $config;
+                        $seen_keys[]   = $key;
+                        break;
+                    }
+                }
+
+                // Fill remaining slots with best remaining configs
+                foreach ($possibilities as $config) {
+                    if (count($top_results) >= 3) break;
+                    $key = $config['model']['name'] . '_' . $config['precision'];
+                    if (!in_array($key, $seen_keys)) {
+                        $top_results[] = $config;
+                        $seen_keys[]   = $key;
+                    }
+                }
+
                 // Top 3 recommendations
                 echo '<div class="results-section">';
                 echo '<h3>' . translate('top_recommendations') . '</h3>';
-                
-                // Diversify top 3: ensure at least one general model
-				$top_results = [];
-				$top_results[] = $possibilities[0]; // Best overall
 
-				// Find best general model (no code/vision tags)
-				foreach ($possibilities as $config) {
-					if (count($top_results) >= 3) break;
-					$tags = $config['model']['tags'];
-					if (empty($tags) || (!in_array('code', $tags) && !in_array('vision', $tags))) {
-						if (!in_array($config, $top_results, true)) {
-							$top_results[] = $config;
-							break;
-						}
-					}
-				}
-
-// Fill remaining slots
-foreach ($possibilities as $config) {
-    if (count($top_results) >= 3) break;
-    if (!in_array($config, $top_results, true)) {
-        $top_results[] = $config;
-    }
-}
                 foreach ($top_results as $index => $config) {
                     $badge_class = $index === 0 ? 'badge-optimal' : 'badge-possible';
-                    $card_class = $index === 0 ? 'model-card optimal' : 'model-card';
-                    $badge_text = $index === 0 ? translate('optimal') : translate('excellent');
-                    
+                    $card_class  = $index === 0 ? 'model-card optimal' : 'model-card';
+                    $badge_text  = $index === 0 ? translate('optimal') : translate('excellent');
+
                     echo '<div class="' . $card_class . '">';
                     echo '<div class="model-header">';
                     echo '<div class="model-name">';
@@ -720,14 +757,14 @@ foreach ($possibilities as $config) {
                     echo '</div>';
                     echo '</div>';
                 }
-                
+
                 echo '</div>';
-                
-                // All other possibilities
+
+                // Other viable configurations
                 if (count($possibilities) > 3) {
                     echo '<div class="results-section">';
                     echo '<h3>' . translate('other_configs') . ' (' . (count($possibilities) - 3) . ')</h3>';
-                    
+
                     $other_results = array_slice($possibilities, 3, 10);
                     foreach ($other_results as $config) {
                         echo '<div class="model-card">';
@@ -753,38 +790,39 @@ foreach ($possibilities as $config) {
                         echo '</div>';
                         echo '</div>';
                     }
-                    
+
                     if (count($possibilities) > 13) {
-                        echo '<p style="text-align: center; color: #999; margin-top: 15px;">' . 
+                        echo '<p style="text-align: center; color: #999; margin-top: 15px;">' .
                              translate('and_more', ['count' => count($possibilities) - 13]) . '</p>';
                     }
-                    
+
                     echo '</div>';
                 }
             } else {
-                $context_text = $context_constraint > 0 ? 
-                    translate('and_context', ['context' => number_format($context_constraint / 1024, 0)]) : '';
-                
+                $context_text = $context_constraint > 0
+                    ? translate('and_context', ['context' => number_format($context_constraint / 1024, 0)])
+                    : '';
+
                 echo '<div class="no-results">';
                 echo '<h3>' . translate('no_results') . '</h3>';
                 echo '<p>' . translate('no_results_text', ['vram' => $vram_available, 'context' => $context_text]) . '</p>';
                 echo '<p style="margin-top: 10px;">' . translate('no_results_tip') . '</p>';
                 echo '</div>';
             }
-            
+
             echo '</div>';
         }
         ?>
     </div>
-    
+
     <script>
-        // GPU presets handling
-        document.querySelectorAll('.gpu-preset-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.gpu-preset-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                document.getElementById('vram').value = this.dataset.vram;
-            });
+        // GPU presets handling with event delegation
+        document.querySelector('.gpu-presets').addEventListener('click', function(e) {
+            const btn = e.target.closest('.gpu-preset-btn');
+            if (!btn) return;
+            document.querySelectorAll('.gpu-preset-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('vram').value = btn.dataset.vram;
         });
     </script>
 </body>
