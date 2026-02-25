@@ -4,26 +4,34 @@
 
 A lightweight web application that helps you determine the best Large Language Model, quantization level, and context size based on your available GPU memory.
 
-[![Docker Build](https://github.com/YOUR_USERNAME/llm-optimizer/workflows/Docker%20Build%20%26%20Test/badge.svg)](https://github.com/YOUR_USERNAME/llm-optimizer/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🌟 Features
 
 ### 🎮 GPU Presets
 Quick selection for popular GPUs:
-- Consumer GPUs: RTX 4060, 4070, 4070 Ti, 5070 Ti, 4090
-- Data Center GPUs: L4, A10, L40S, H100, A100
+- **Consumer NVIDIA RTX 50 series**: RTX 5060 (8 GB), RTX 5070 (12 GB), RTX 5070 Ti (16 GB), RTX 5080 (24 GB), RTX 5090 (32 GB)
+- **Consumer NVIDIA RTX 40 series**: RTX 4080 (16 GB), RTX 4090 (24 GB)
+- **Data Center NVIDIA**: A100 40/80 GB, L40S 48 GB, H100 80 GB, H200 94/141 GB, B100 192 GB, B200 288 GB
+- **Data Center AMD**: MI300X 192 GB, MI325X 256 GB
 
-### 🤖 Supported Models
-- **Large**: Llama 3.3 70B, Llama 3.1 70B, Mixtral 8x7B
-- **Medium**: Qwen 2.5 32B/14B
-- **Small**: Llama 3.1 8B, Mistral 7B, Gemma 2 9B
-- **Tiny**: Phi-3 Mini 3.8B, Gemma 2 2B
+### 🤖 Supported Models (February 2026)
+
+| Category | Models |
+|----------|--------|
+| **Tiny (< 5B)** | Llama 3.2 1B/3B, Gemma 3 1B/4B, Phi-4 Mini 3.8B, Qwen3 0.6B/1.7B/4B, Qwen2.5 3B |
+| **Small (5–15B)** | Gemma 3 12B, Mistral Nemo 12B, Qwen3 8B, Qwen2.5 7B/14B, Phi-4 14B |
+| **Coding** | Qwen2.5 Coder 7B/32B, Granite 3.3 8B, Codestral 22B |
+| **Reasoning** | DeepSeek-R1 Distill 7B/8B/14B/32B/70B, DeepSeek-R1 671B |
+| **Vision** | Llama 3.2 11B/90B Vision, Qwen2.5-VL 3B/7B/32B/72B, Pixtral 12B, Qwen3-VL 32B/235B |
+| **Medium (15–50B)** | Gemma 3 27B, Mistral Small 3.1 24B, Qwen3 14B/32B/30B (MoE), Qwen2.5 32B |
+| **Large (50–150B)** | Llama 3.3 70B, Qwen2.5 72B, Llama 4 Scout (MoE 17B active) |
+| **Huge (150B+)** | Qwen3 235B (MoE), Llama 4 Maverick (MoE), DeepSeek-V3 671B (MoE), Qwen3-Coder 480B (MoE), Kimi K2 1T (MoE) |
 
 ### ⚙️ Quantization Support
-- **FP16**: Maximum precision
-- **FP8**: Recommended - good quality/performance balance
-- **FP4**: Maximum VRAM savings
+- **FP16**: Maximum precision (2 bytes/param)
+- **FP8**: Good quality/performance balance (1 byte/param)
+- **FP4**: Maximum VRAM savings (0.5 bytes/param)
 
 ### 🎯 Optimization Modes
 - **Balanced**: Best overall compromise
@@ -68,7 +76,7 @@ php -S 0.0.0.0:8080
 ### Calculation Formula
 
 ```
-Total VRAM = (Parameters × Precision Factor) + (Context Size × 0.0005)
+Total VRAM = (Parameters × Precision Factor) + (Context Size × KV_per_token)
 ```
 
 **Precision Factors:**
@@ -76,24 +84,38 @@ Total VRAM = (Parameters × Precision Factor) + (Context Size × 0.0005)
 - FP8: 1
 - FP4: 0.5
 
+**KV Cache per token** (scales with model size via GQA):
+```
+kv_per_token = max(0.08, 0.04 × √params_B)  MB/token
+```
+
+This sqrt scaling reflects that modern models use Group Query Attention (GQA), where the number of KV heads grows much slower than total parameters. Calibrated values:
+
+| Model size | KV cache/token |
+|-----------|---------------|
+| 8B  | ~0.11 MB |
+| 14B | ~0.15 MB |
+| 32B | ~0.23 MB |
+| 70B | ~0.33 MB |
+
 ### Example Calculations
 
-**Llama 3.1 8B in FP8 with 32K context:**
-- Model: 8B × 1 = 8 GB
-- Context: 32,768 × 0.0005 = 16.4 GB
-- **Total: 24.4 GB** → Requires 1× RTX 4090 (24GB)
+**Qwen2.5 14B in FP4 with 32K context on 16 GB GPU:**
+- Model: 14B × 0.5 = 7.0 GB
+- KV cache: 32,768 × 0.00015 = 4.9 GB
+- **Total: 11.9 GB** ✓ fits in 16 GB (74%)
 
-**Qwen 2.5 32B in FP16 with 16K context:**
-- Model: 32B × 2 = 64 GB
-- Context: 16,384 × 0.0005 = 8.2 GB
-- **Total: 72.2 GB** → Requires 1× A100 (80GB)
+**Llama 3.3 70B in FP4 on A100 80GB:**
+- Model: 70B × 0.5 = 35 GB
+- Remaining for context: ~41 GB → up to 64K–128K context
 
 ### Algorithm
 
 1. For each model and quantization level:
    - Calculate model memory: `params × precision_factor`
    - Calculate available context memory: `(vram × 0.95) - model_memory`
-   - Find maximum context: `context_memory / 0.0005`
+   - Compute KV cost: `max(0.00008, 0.00004 × √params)` GB/token
+   - Find maximum context: `context_memory / kv_per_token`
    - Validate against minimum context constraint
 
 2. Score configurations based on priority:
@@ -102,16 +124,16 @@ Total VRAM = (Parameters × Precision Factor) + (Context Size × 0.0005)
    - **Context**: `(context × 1000) + params`
    - **Quality**: `((3 - precision) × 10000) + (params × 100) + (context / 1000)`
 
-3. Return top 3 + additional viable configurations
+3. Return top 3 diversified recommendations + additional viable configurations
 
 ## 🏗️ Architecture
 
 - **Backend**: PHP 8.2-FPM
 - **Web Server**: Nginx (Alpine)
 - **Base Image**: Alpine Linux
-- **Image Size**: ~50MB
-- **Memory Usage**: ~10MB RAM
-- **Response Time**: <100ms
+- **Image Size**: ~50 MB
+- **Memory Usage**: ~10 MB RAM
+- **Response Time**: <100 ms
 
 ### Project Structure
 
@@ -120,19 +142,12 @@ llm-optimizer/
 ├── index.php              # Main application
 ├── Dockerfile             # Container definition
 ├── docker-compose.yml     # Local development
-├── nginx.conf            # Web server config
-├── start.sh              # Startup script
-├── .github/
-│   └── workflows/
-│       └── docker-build.yml  # CI/CD pipeline
-├── .gitignore
-├── .dockerignore
+├── nginx.conf             # Web server config
+├── start.sh               # Startup script
 └── README.md
 ```
 
 ## 🧪 Testing
-
-Run the automated test suite:
 
 ```bash
 # Build and test
@@ -146,15 +161,13 @@ curl http://localhost:8888
 docker stop test && docker rm test
 ```
 
-GitHub Actions automatically runs tests on every push.
-
 ## 🌐 Deployment
 
 ### General Requirements
 
 - Docker support
 - Port 80 available (or custom port mapping)
-- Minimal resources: 128MB RAM, 0.1 CPU
+- Minimal resources: 128 MB RAM, 0.1 CPU
 
 ### Platform-Specific Guides
 
@@ -243,8 +256,8 @@ To add your own models, edit `index.php`:
 
 ```php
 $models = [
-    ['name' => 'Your Model', 'params' => 13, 'category' => 'Medium'],
-    // Add more...
+    ['name' => 'Your Model', 'params' => 13, 'tags' => ['code']],
+    // tags: 'code', 'vision', 'reasoning', 'multilingual'
 ];
 ```
 
@@ -258,45 +271,37 @@ ports:
 
 ## 📊 Use Cases
 
-### Example 1: RTX 5070 Ti Owner (16GB)
+### Example 1: RTX 5070 Ti Owner (16 GB)
 **Question**: "What can I run with decent context?"
 
 **Results**:
-- ⭐ Llama 3.1 8B (FP8) → 128K context
-- ✓ Mistral 7B (FP8) → 128K context
-- ✓ Qwen 2.5 14B (FP4) → 32K context
+- ⭐ Qwen2.5 14B (FP4) → 32K context
+- ✓ Gemma 3 12B (FP8) → 64K context
+- ✓ Qwen3 8B (FP4) → 64K context
 
-### Example 2: Data Center Deployment (A100 80GB)
+### Example 2: Data Center Deployment (A100 80 GB)
 **Question**: "Largest model with 32K+ context?"
 
 **Results**:
-- ⭐ Llama 3.3 70B (FP16) → 32K context
-- ✓ Llama 3.3 70B (FP8) → 128K context (recommended)
+- ⭐ Llama 3.3 70B (FP4) → 64K context
+- ✓ Qwen2.5 72B (FP4) → 64K context
 
 ### Example 3: Maximum Context Priority
-**Question**: "Longest possible context window?"
+**Question**: "Longest possible context window on 16 GB?"
 
 **Results**:
-- ⭐ Gemma 2 2B (FP8) → 256K context
-- ✓ Phi-3 Mini 3.8B (FP8) → 256K context
+- ⭐ Qwen3 1.7B (FP4) → 512K context
+- ✓ Llama 3.2 3B (FP4) → 512K context
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Development Setup
-
-```bash
-git clone https://github.com/YOUR_USERNAME/llm-optimizer.git
-cd llm-optimizer
-docker-compose up
-```
-
 ### Adding New Models
 
 1. Edit the `$models` array in `index.php`
 2. Test locally
-3. Submit PR with model name, parameter count, and category
+3. Submit PR with model name, parameter count, and tags
 
 ### Adding Languages
 
@@ -307,10 +312,6 @@ docker-compose up
 ## 📝 License
 
 MIT License - feel free to use this project for any purpose.
-
-## 🙏 Credits
-
-Based on GPU calculation formulas from [OVHcloud's LLM GPU Guide](https://blog.ovhcloud.com/gpu-for-llm-inferencing-guide/).
 
 ## 📧 Support
 
