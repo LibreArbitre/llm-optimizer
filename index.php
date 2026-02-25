@@ -538,22 +538,17 @@ function render_tags($tags) {
                 ['name' => 'Qwen2.5 3B',            'params' => 3,    'tags' => ['multilingual']],
 
                 // ===== SMALL (5-15B) - GPU 16-24 GB =====
-                ['name' => 'Llama 3.1 8B',          'params' => 8,    'tags' => []],
-                ['name' => 'Mistral 7B',             'params' => 7,    'tags' => []],
-                ['name' => 'Mistral Nemo 12B',       'params' => 12,   'tags' => []],
                 ['name' => 'Gemma 3 12B',            'params' => 12,   'tags' => []],
+                ['name' => 'Mistral Nemo 12B',       'params' => 12,   'tags' => []],
                 ['name' => 'Qwen3 8B',               'params' => 8,    'tags' => ['multilingual']],
                 ['name' => 'Qwen2.5 7B',             'params' => 7,    'tags' => ['multilingual']],
                 ['name' => 'Qwen2.5 14B',            'params' => 14,   'tags' => ['multilingual']],
                 ['name' => 'Phi-4 14B',              'params' => 14,   'tags' => ['reasoning']],
-                ['name' => 'InternLM3 8B',           'params' => 8,    'tags' => ['multilingual']],
 
                 // ===== CODING SPECIALISTS - Small =====
                 ['name' => 'Qwen2.5 Coder 7B',      'params' => 7,    'tags' => ['code', 'multilingual']],
                 ['name' => 'Granite 3.3 8B',         'params' => 8,    'tags' => ['code']],
-                ['name' => 'StarCoder2 15B',          'params' => 15,   'tags' => ['code']],
                 ['name' => 'Codestral 22B',           'params' => 22,   'tags' => ['code']],
-                ['name' => 'DeepSeek Coder V2 Lite 16B', 'params' => 16, 'tags' => ['code']],
 
                 // ===== REASONING - Small =====
                 ['name' => 'DeepSeek-R1 Distill 7B',  'params' => 7,  'tags' => ['reasoning']],
@@ -573,8 +568,6 @@ function render_tags($tags) {
                 ['name' => 'Qwen3 32B',               'params' => 32,  'tags' => ['multilingual']],
                 ['name' => 'Qwen3 30B (MoE 3B active)', 'params' => 30, 'tags' => ['multilingual']],
                 ['name' => 'Qwen2.5 32B',             'params' => 32,  'tags' => ['multilingual']],
-                ['name' => 'Yi 34B',                  'params' => 34,  'tags' => ['multilingual']],
-                ['name' => 'Mixtral 8x7B (MoE)',      'params' => 47,  'tags' => []],
 
                 // ===== REASONING - Medium =====
                 ['name' => 'DeepSeek-R1 Distill 32B', 'params' => 32, 'tags' => ['reasoning']],
@@ -585,35 +578,26 @@ function render_tags($tags) {
                 // ===== MULTIMODAL - Medium =====
                 ['name' => 'Qwen2.5-VL 32B',         'params' => 32,  'tags' => ['vision', 'multilingual']],
                 ['name' => 'Qwen3-VL 32B',            'params' => 32,  'tags' => ['vision', 'multilingual']],
-                ['name' => 'Ovis2 34B',               'params' => 34,  'tags' => ['vision']],
 
                 // ===== LARGE (50-150B) - Multi-GPU =====
-                ['name' => 'Llama 3.1 70B',           'params' => 70,  'tags' => []],
                 ['name' => 'Llama 3.2 90B Vision',    'params' => 90,  'tags' => ['vision']],
                 ['name' => 'Llama 3.3 70B',           'params' => 70,  'tags' => []],
                 ['name' => 'Qwen2.5 72B',             'params' => 72,  'tags' => ['multilingual']],
                 ['name' => 'Llama 4 Scout (MoE 17B active)', 'params' => 109, 'tags' => ['multilingual']],
-                ['name' => 'Mistral Large 2 123B',    'params' => 123, 'tags' => []],
-                ['name' => 'Mixtral 8x22B (MoE)',     'params' => 141, 'tags' => []],
 
                 // ===== REASONING - Large =====
                 ['name' => 'DeepSeek-R1 Distill 70B', 'params' => 70, 'tags' => ['reasoning']],
 
                 // ===== MULTIMODAL - Large =====
                 ['name' => 'Qwen2.5-VL 72B',         'params' => 72,  'tags' => ['vision', 'multilingual']],
-                ['name' => 'InternVL3 78B',           'params' => 78,  'tags' => ['vision']],
-                ['name' => 'GLM-4V 100B (MoE ~12B active)', 'params' => 100, 'tags' => ['vision', 'multilingual']],
 
                 // ===== HUGE (150B+) - Data center infrastructure =====
-                ['name' => 'MiniMax-M2.1 230B (MoE 10B active)', 'params' => 230, 'tags' => ['code']],
                 ['name' => 'Qwen3 235B (MoE 22B active)',         'params' => 235, 'tags' => ['multilingual']],
                 ['name' => 'Llama 4 Maverick (MoE 17B active)',   'params' => 400, 'tags' => ['multilingual']],
-                ['name' => 'Llama 3.1 405B',          'params' => 405, 'tags' => []],
                 ['name' => 'DeepSeek-V3 671B (MoE 37B active)',   'params' => 671, 'tags' => ['code']],
                 ['name' => 'DeepSeek-R1 671B (MoE)',  'params' => 671, 'tags' => ['reasoning', 'code']],
 
                 // ===== CODING SPECIALISTS - Huge =====
-                ['name' => 'DeepSeek Coder V2 236B (MoE 21B active)', 'params' => 236, 'tags' => ['code']],
                 ['name' => 'Qwen3-Coder 480B (MoE 35B active)',   'params' => 480, 'tags' => ['code', 'multilingual']],
                 ['name' => 'Kimi K2 1T (MoE 32B active)',         'params' => 1000, 'tags' => ['code']],
 
@@ -642,8 +626,11 @@ function render_tags($tags) {
                     $vram_for_context = $usable_vram - $model_memory;
 
                     if ($vram_for_context > 0) {
-                        // Calculate maximum possible context
-                        $max_context_tokens = floor($vram_for_context / 0.0005);
+                        // KV cache per token: GQA makes large models far more efficient.
+                        // sqrt(params) scaling reflects layers grow slower than total params.
+                        // Calibrated against real architectures: 8B≈0.11MB, 14B≈0.15MB, 70B≈0.33MB/token
+                        $kv_per_token = max(0.00008, 0.00004 * sqrt($model['params'])); // GB per token
+                        $max_context_tokens = floor($vram_for_context / $kv_per_token);
 
                         // Find largest standard context that fits
                         $optimal_context = 0;
@@ -655,7 +642,7 @@ function render_tags($tags) {
 
                         // Check if it meets the constraint
                         if ($optimal_context >= $context_constraint && $optimal_context > 0) {
-                            $context_memory = $optimal_context * 0.0005;
+                            $context_memory = $optimal_context * $kv_per_token;
                             $total_vram = $model_memory + $context_memory;
 
                             // Score for sorting
